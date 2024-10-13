@@ -3,106 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virus-Like GDI Glitch Effect</title>
+    <title>Windows XP Virus GDI Effect</title>
     <style>
         body {
-            background-color: black;
-            color: #00FF00;
-            font-family: 'Courier New', Courier, monospace;
+            background-color: #000080;
+            font-family: 'Arial', sans-serif;
             overflow: hidden;
+            color: #00FF00;
         }
 
-        .gdi-text {
-            font-size: 4em;
-            position: relative;
-            color: #FF0000;
-            text-shadow: 3px 3px 0px #00FF00, -3px -3px 0px #0000FF;
-            animation: virus-glitch 0.1s infinite;
-            white-space: nowrap;
-            letter-spacing: 0.1em;
-        }
-
-        .gdi-box {
-            width: 400px;
-            height: 200px;
-            background-color: rgba(255, 0, 0, 0.7);
-            border: 6px solid #00FF00;
-            box-shadow: 15px 15px 0px rgba(0, 255, 255, 0.9), -15px -15px 0px rgba(255, 0, 0, 0.9);
-            position: relative;
-            animation: virus-glitch-box 0.15s infinite;
+        .gdi-window {
+            width: 300px;
+            height: 150px;
+            background-color: #C0C0C0;
+            border: 3px solid #000000;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            box-shadow: 8px 8px 0px rgba(255, 0, 0, 0.7), -8px -8px 0px rgba(0, 255, 0, 0.7);
+            animation: gdi-move 0.1s infinite alternate, gdi-rotate 0.5s infinite;
             z-index: 100;
         }
 
-        @keyframes virus-glitch {
+        .gdi-window .title-bar {
+            background-color: #0000FF;
+            padding: 5px;
+            color: #FFFFFF;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .gdi-window .content {
+            padding: 10px;
+            color: black;
+            background-color: #F0F0F0;
+            text-shadow: 1px 1px 0px #00FF00;
+            font-size: 1.2em;
+            line-height: 1.5em;
+        }
+
+        .gdi-glitch {
+            position: absolute;
+            width: 150px;
+            height: 100px;
+            background-color: rgba(0, 255, 0, 0.5);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: gdi-glitch 0.2s infinite;
+        }
+
+        @keyframes gdi-glitch {
             0% { transform: translate(0, 0) skew(0deg); }
-            20% { transform: translate(-5px, 5px) skew(-5deg); }
-            40% { transform: translate(5px, -5px) skew(5deg); }
-            60% { transform: translate(-3px, 3px) skew(-3deg); }
-            80% { transform: translate(3px, -3px) skew(3deg); }
-            100% { transform: translate(0, 0) skew(0deg); }
+            50% { transform: translate(-20px, 10px) skew(10deg); }
+            100% { transform: translate(20px, -10px) skew(-10deg); }
         }
 
-        @keyframes virus-glitch-box {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(5px, -5px) rotate(3deg); }
-            50% { transform: translate(-7px, 7px) rotate(-6deg); }
-            75% { transform: translate(8px, -8px) rotate(5deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
+        @keyframes gdi-move {
+            0% { top: 40%; left: 40%; }
+            100% { top: 60%; left: 60%; }
         }
 
-        .gdi-bg {
-            background: radial-gradient(circle, #ff0000, #0000ff, #00ff00, #ff00ff);
-            background-size: 600% 600%;
+        @keyframes gdi-rotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes gdi-background {
+            0% { background-color: #000080; }
+            50% { background-color: #FF0000; }
+            100% { background-color: #000080; }
+        }
+
+        @keyframes gdi-text {
+            0% { color: #00FF00; }
+            50% { color: #FF0000; }
+            100% { color: #00FF00; }
+        }
+
+        body {
+            animation: gdi-background 2s infinite;
+        }
+
+        .gdi-text {
+            font-size: 3em;
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            animation: virus-bg 1s infinite;
-            z-index: -1;
-            filter: blur(2px);
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: gdi-text 0.3s infinite;
         }
 
-        @keyframes virus-bg {
-            0% { background-position: 0% 0%; }
-            25% { background-position: 100% 0%; }
-            50% { background-position: 100% 100%; }
-            75% { background-position: 0% 100%; }
-            100% { background-position: 0% 0%; }
-        }
-
-        .gdi-scanlines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0.1),
-                rgba(0, 0, 0, 0.1) 2px,
-                rgba(255, 0, 0, 0.1) 4px
-            );
-            z-index: 1000;
-            pointer-events: none;
-            animation: scanlines 0.05s infinite;
-        }
-
-        @keyframes scanlines {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-4px); }
+        audio {
+            display: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="gdi-bg"></div>
+    <h1 class="gdi-text">ERROR: System Corrupted</h1>
 
-    <h1 class="gdi-text">VIRUS DETECTED</h1>
+    <div class="gdi-window" style="top: 30%; left: 70%;">
+        <div class="title-bar">Critical Error</div>
+        <div class="content">Your system has encountered a fatal error. GDI+ Failure.</div>
+    </div>
 
-    <div class="gdi-box"></div>
+    <div class="gdi-window" style="top: 70%; left: 30%;">
+        <div class="title-bar">Fatal Exception</div>
+        <div class="content">0x000000F4: System Crash</div>
+    </div>
 
-    <div class="gdi-scanlines"></div>
+    <div class="gdi-glitch"></div>
+
+    <audio id="gdi-sound" autoplay loop>
+        <source src="https://www.soundjay.com/button/beep-02.wav" type="audio/wav">
+    </audio>
+
+    <audio id="gdi-error" autoplay>
+        <source src="https://www.soundjay.com/button/beep-07.wav" type="audio/wav">
+    </audio>
+
+    <script>
+        // Trigger sound effects randomly for extra chaotic vibe
+        const errorSound = document.getElementById('gdi-error');
+        setInterval(() => {
+            errorSound.currentTime = 0;
+            errorSound.play();
+        }, Math.random() * 3000 + 1000); // Random interval between 1 and 3 seconds
+    </script>
 
 </body>
 </html>
