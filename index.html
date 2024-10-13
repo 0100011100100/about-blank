@@ -5,22 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        body {
+            background-color: black;
+            color: red;
+            font-family: "Courier New", Courier, monospace;
+            text-align: center;
         }
-        body, html {
-            height: 100%;
-        }
-        img {
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover; /* Ensures the image covers the screen without distortion */
+
+        .error-message {
+            font-size: 2em;
+            margin-top: 20%;
         }
     </style>
 </head>
 <body>
-    <img src="https://imgur.com/a/y9Ggivr" alt="Full-Screen Image">
+    <div class="error-message">System Error! Please Restart!</div>
+
+    <script>
+        // Play a spooky sound when the page loads
+        const sound = new Audio('https://www.soundjay.com/button/beep-07.wav');  // Example sound
+        sound.play();
+
+        // Fake error popup every 5 seconds
+        setInterval(() => {
+            alert('Critical system error! Reboot required!');
+        }, 5000);
+
+        // Changing background color for "hacker" effect
+        let colors = ['red', 'black'];
+        let i = 0;
+        setInterval(() => {
+            document.body.style.backgroundColor = colors[i % colors.length];
+            i++;
+        }, 1000);
+    </script>
 </body>
 </html>
