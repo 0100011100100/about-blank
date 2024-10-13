@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Chaos Virus Simulation</title>
     <style>
         /* Windows XP background */
         body, html {
             height: 100%;
             margin: 0;
-            background-image: url('https://imgur.com/a/Sux2zhY'); /* Windows XP background */
+            background-image: url('https://i.imgur.com/Ubu240l.png'); /* Windows XP background */
             background-size: cover;
             overflow: hidden;
             position: relative;
@@ -22,7 +22,7 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(1.2);
+            transform: translate(-50%, -50%) scale(1);
             font-size: 3em;
             padding: 20px;
             background-color: red;
@@ -62,39 +62,39 @@
 
         /* Flashing lights */
         .flashing {
-            animation: flashingEffect 0.05s infinite; /* More frequent flashing */
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none; /* Click-through */
+            animation: flashingEffect 0.1s infinite; /* Very frequent flashing */
         }
 
         @keyframes flashingEffect {
             0% { background-color: red; }
-            20% { background-color: blue; }
-            40% { background-color: green; }
-            60% { background-color: yellow; }
-            80% { background-color: purple; }
-            100% { background-color: orange; }
-        }
-
-        .hidden {
-            display: none;
+            25% { background-color: blue; }
+            50% { background-color: green; }
+            75% { background-color: yellow; }
+            100% { background-color: purple; }
         }
 
         /* Distortion */
         .distort {
-            animation: distortEffect 0.1s infinite;
+            animation: distortEffect 0.05s infinite; /* Faster distortion */
         }
 
         @keyframes distortEffect {
             0% { transform: scale(1); }
-            20% { transform: scale(1.1) skew(5deg); }
-            40% { transform: scale(0.9) skew(-5deg); }
-            60% { transform: scale(1.2) skew(3deg); }
-            80% { transform: scale(0.8) skew(-3deg); }
+            10% { transform: scale(1.05) skew(5deg); }
+            20% { transform: scale(0.95) skew(-5deg); }
+            30% { transform: scale(1.1) skew(3deg); }
+            40% { transform: scale(0.9) skew(-3deg); }
+            50% { transform: scale(1.05) skew(0deg); }
+            60% { transform: scale(1.2) skew(-2deg); }
+            70% { transform: scale(0.8) skew(2deg); }
+            80% { transform: scale(1.15) skew(-1deg); }
+            90% { transform: scale(0.85) skew(1deg); }
             100% { transform: scale(1); }
         }
 
@@ -105,7 +105,7 @@
 
         @keyframes zoomEffect {
             0% { transform: translate(-50%, -50%) scale(1); }
-            100% { transform: translate(-50%, -50%) scale(2); } /* Zoom closer */
+            100% { transform: translate(-50%, -50%) scale(3); } /* Dramatically zoom closer */
         }
     </style>
 </head>
@@ -136,7 +136,7 @@
             document.getElementById('laughSound').play();
 
             // Generate chaos
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 150; i++) { // Increased number of popups and flashing layers
                 createPopup();
                 createFlashingLayer();
             }
@@ -176,7 +176,7 @@
             // Remove after a very short time
             setTimeout(() => {
                 flashingLayer.remove();
-            }, 200);
+            }, 100); // Faster removal for a chaotic effect
         }
     </script>
 </body>
