@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chaos Virus Simulation</title>
+    <title></title>
     <style>
         /* Windows XP background */
         body, html {
             height: 100%;
             margin: 0;
-            background-image: url('https://i.imgur.com/Ubu240l.png'); /* Windows XP background */
+            background-image: url('https://i.imgur.com/WcEgdR6.jpg'); /* Windows XP background */
             background-size: cover;
             overflow: hidden;
             position: relative;
@@ -98,6 +98,11 @@
             100% { transform: scale(1); }
         }
 
+        /* GDI effect */
+        .gdi {
+            filter: blur(5px) contrast(200%) brightness(50%);
+        }
+
         /* 3D zoom effect */
         .zoom {
             animation: zoomEffect 1s forwards; /* Zoom in */
@@ -145,7 +150,15 @@
             document.body.classList.add('distort');
 
             // Start zoom effect
-            document.querySelector('.virus').classList.add('zoom');
+            const virusElement = document.querySelector('.virus');
+            virusElement.classList.add('zoom');
+
+            // After the button is clicked, apply GDI effect and remove the virus element
+            setTimeout(() => {
+                document.body.classList.add('gdi'); // Apply GDI effect
+                virusElement.style.display = 'none'; // Remove virus element
+                createClosingEffect();
+            }, 1500); // Delay before the self-destruction effect
         }
 
         function createPopup() {
@@ -177,6 +190,25 @@
             setTimeout(() => {
                 flashingLayer.remove();
             }, 100); // Faster removal for a chaotic effect
+        }
+
+        function createClosingEffect() {
+            const closingEffect = document.createElement('div');
+            closingEffect.style.position = 'absolute';
+            closingEffect.style.top = '50%';
+            closingEffect.style.left = '50%';
+            closingEffect.style.width = '100vw';
+            closingEffect.style.height = '100vh';
+            closingEffect.style.backgroundColor = 'black';
+            closingEffect.style.opacity = '0';
+            closingEffect.style.transition = 'opacity 0.5s ease-in-out';
+            document.body.appendChild(closingEffect);
+            setTimeout(() => {
+                closingEffect.style.opacity = '1'; // Fade to black
+                setTimeout(() => {
+                    closingEffect.remove(); // Remove after fade out
+                }, 500);
+            }, 100);
         }
     </script>
 </body>
