@@ -3,33 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fake Virus Simulation</title>
+    <title>Virus Simulation</title>
     <style>
-        /* Global styles for chaotic "virus" appearance */
+        /* Windows XP background */
         body, html {
             height: 100%;
             margin: 0;
-            background-color: black;
-            color: lime;
+            background-image: url('windows-xp-background.jpg'); /* Add your Windows XP background image */
+            background-size: cover;
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
+            text-align: center;
+            transition: background-color 0.5s ease;
         }
 
         h1 {
+            color: black;
             font-size: 3em;
-            text-align: center;
-            animation: glitch 2s infinite;
+            cursor: pointer;
+            transition: color 0.5s ease;
         }
 
-        p {
+        .virus {
             font-size: 1.5em;
-            text-align: center;
-            margin-top: -20px;
-            animation: flicker 1.5s infinite alternate;
+            padding: 20px;
+            background-color: red;
+            color: white;
+            border: 3px solid black;
+            cursor: pointer;
+            animation: flicker 2s infinite;
         }
 
         @keyframes flicker {
@@ -41,124 +46,103 @@
             }
         }
 
-        @keyframes glitch {
-            0% {
-                transform: translate(0);
-            }
-            20% {
-                transform: translate(-10px, 10px);
-            }
-            40% {
-                transform: translate(10px, -10px);
-            }
-            60% {
-                transform: translate(-10px, -10px);
-            }
-            80% {
-                transform: translate(10px, 10px);
-            }
-            100% {
-                transform: translate(0);
-            }
+        /* Flashing effect */
+        .flashing {
+            animation: epilepsy 0.1s infinite alternate;
         }
 
-        /* Popup window styles */
+        @keyframes epilepsy {
+            0% { background-color: red; }
+            100% { background-color: blue; }
+        }
+
+        /* Popup style */
         .popup {
             position: absolute;
-            background-color: red;
-            color: white;
-            border: 2px solid black;
-            padding: 15px;
-            font-size: 20px;
-            width: 300px;
-            height: 150px;
-            text-align: center;
-            box-shadow: 0px 0px 10px black;
-            animation: movePopup 4s infinite;
+            background-color: black;
+            color: red;
+            border: 2px solid white;
+            font-size: 2em;
+            padding: 20px;
+            z-index: 1000;
+            animation: movePopup 5s infinite;
         }
 
         @keyframes movePopup {
-            0% { top: 0; left: 0; }
-            25% { top: 10%; left: 80%; }
-            50% { top: 50%; left: 40%; }
-            75% { top: 70%; left: 10%; }
-            100% { top: 90%; left: 90%; }
+            0% { top: 10%; left: 10%; }
+            25% { top: 20%; left: 60%; }
+            50% { top: 70%; left: 40%; }
+            75% { top: 40%; left: 20%; }
+            100% { top: 10%; left: 90%; }
         }
 
-        /* Simulated warning box */
-        .warning {
-            position: absolute;
-            background-color: yellow;
-            color: black;
-            border: 5px solid red;
-            padding: 20px;
-            font-size: 18px;
-            animation: shake 3s infinite;
+        .hidden {
+            display: none;
         }
 
-        @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        .scary-laugh {
+            display: none;
+        }
+
+        /* Distortion */
+        .distort {
+            animation: distortEffect 0.2s infinite;
+        }
+
+        @keyframes distortEffect {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.2) skew(10deg, 5deg); }
+            50% { transform: scale(0.9) skew(-5deg, -5deg); }
+            100% { transform: scale(1.1); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Fake system message -->
-    <h1>CRITICAL SYSTEM ERROR</h1>
-    <p>System failure. Virus detected.</p>
+    <!-- Initial Virus Button -->
+    <h1 class="virus" onclick="startVirus()">Click here to remove virus!</h1>
 
-    <!-- Fake virus popups -->
-    <div class="popup" style="top: 20%; left: 20%;">Click here to remove virus!</div>
-    <div class="popup" style="top: 40%; left: 60%;">Warning! System compromised.</div>
+    <!-- Popups -->
+    <div class="popup hidden" id="popup1">D I E</div>
+    <div class="popup hidden" id="popup2">D I E</div>
+    <div class="popup hidden" id="popup3">D I E</div>
 
-    <!-- Simulated warning box -->
-    <div class="warning" style="top: 60%; left: 30%;">ALERT! Immediate action required.</div>
-
-    <!-- Sound effect -->
-    <audio autoplay loop>
-        <source src="error-beep.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
+    <!-- Sound for Beeping, Alarms, and Scary Laugh -->
+    <audio id="beepSound" class="hidden" loop>
+        <source src="beep.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="alarmSound" class="hidden" loop>
+        <source src="alarm.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="laughSound" class="scary-laugh" loop>
+        <source src="scary-laugh.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // Simulate random popup creation like a chaotic virus
-        function createPopup() {
-            const popup = document.createElement('div');
-            popup.classList.add('popup');
-            popup.textContent = 'Virus detected! Click to remove!';
-            document.body.appendChild(popup);
+        // Function to start the virus effects
+        function startVirus() {
+            document.body.classList.add('flashing');  // Start flashing effect
+            document.querySelector('.virus').classList.add('distort');  // Distort virus button
 
-            // Random positioning
-            popup.style.top = Math.random() * 90 + 'vh';
-            popup.style.left = Math.random() * 90 + 'vw';
+            // Show popups randomly
+            setTimeout(() => document.getElementById('popup1').classList.remove('hidden'), 1000);
+            setTimeout(() => document.getElementById('popup2').classList.remove('hidden'), 2000);
+            setTimeout(() => document.getElementById('popup3').classList.remove('hidden'), 3000);
 
-            // Random disappearance time
-            setTimeout(() => {
-                popup.remove();
-            }, 4000 + Math.random() * 3000);
+            // Play sounds (beep, alarm, and scary laugh)
+            document.getElementById('beepSound').play();
+            document.getElementById('alarmSound').play();
+            setTimeout(() => document.getElementById('laughSound').play(), 2000);
+
+            // Continuously play loud, distorted scary laugh after a delay
+            document.getElementById('laughSound').classList.remove('hidden');
         }
 
-        // Continuously create new popups to simulate the virus-like behavior
-        setInterval(createPopup, 1500);
-
-        // Play a beep sound every 5 seconds (you need to provide error-beep.mp3)
-        function playSound() {
-            const sound = new Audio('error-beep.mp3');
-            sound.play();
-        }
-
-        setInterval(playSound, 5000); // Play the sound every 5 seconds
+        // Continuous distortion of the screen
+        setInterval(function() {
+            const body = document.body;
+            body.classList.toggle('distort');
+        }, 500);
     </script>
-
 </body>
 </html>
