@@ -3,181 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Windows XP Virus GDI Effect</title>
+    <title>GDI and HSL Glitch Effect</title>
     <style>
         body {
-            background-color: #000080;
-            font-family: 'Arial', sans-serif;
-            color: #00FF00;
+            background-color: #000;
             overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Pixelated GDI effect for distorted visuals */
+        /* Base styles for the glitch windows */
         .gdi-window {
-            width: 320px;
-            height: 180px;
+            width: 250px;
+            height: 150px;
             background-color: #C0C0C0;
-            border: 3px solid #000000;
+            border: 2px solid #000;
             position: absolute;
-            box-shadow: 10px 10px 0px rgba(255, 0, 0, 0.8), -10px -10px 0px rgba(0, 255, 0, 0.8);
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            filter: contrast(300%) saturate(200%) blur(2px);
+            z-index: 999;
+            filter: hue-rotate(0deg) contrast(400%) saturate(200%) blur(1px);
+            transform: translate(-50%, -50%) rotate(0deg);
+            animation: move 4s infinite, glitch 0.5s infinite alternate-reverse, hueShift 6s infinite;
             image-rendering: pixelated;
-            animation: gdi-bad-move 1.2s infinite steps(1), gdi-rotate 2.5s infinite steps(10);
         }
 
+        /* Title bars for windows */
         .gdi-window .title-bar {
-            background-color: #0000FF;
+            background-color: #000080;
             padding: 5px;
-            color: #FFFFFF;
+            color: #FFF;
             text-align: center;
             font-weight: bold;
             font-size: 16px;
+            position: relative;
         }
 
+        /* Glitching text */
         .gdi-window .content {
             padding: 10px;
-            background-color: #F0F0F0;
-            text-shadow: 2px 2px 0px #FF00FF;
-            color: #000000;
+            background-color: #FFF;
             font-size: 12px;
-            line-height: 1.5em;
+            color: #000;
+            text-shadow: 2px 2px #FF00FF, -2px -2px #00FF00;
         }
 
-        .gdi-error {
-            width: 150px;
-            height: 100px;
-            background-color: rgba(255, 0, 0, 0.8);
+        /* HSL shader-like effect */
+        .hsl-window {
+            width: 300px;
+            height: 180px;
             position: absolute;
-            animation: gdi-glitch 0.3s infinite;
-            filter: blur(2px) contrast(500%);
-        }
-
-        @keyframes gdi-bad-move {
-            0% { top: 20%; left: 40%; }
-            50% { top: 50%; left: 60%; }
-            100% { top: 70%; left: 50%; }
-        }
-
-        @keyframes gdi-rotate {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        @keyframes gdi-glitch {
-            0% { transform: translate(0, 0) skew(0deg); }
-            50% { transform: translate(-30px, 15px) skew(20deg); }
-            100% { transform: translate(30px, -15px) skew(-20deg); }
-        }
-
-        /* Laggy animation for background flash */
-        @keyframes gdi-background {
-            0% { background-color: #000080; }
-            50% { background-color: #FF0000; }
-            100% { background-color: #000080; }
-        }
-
-        /* Fake low frame rate for "laggy" effect */
-        .laggy-text {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 40px;
-            color: #FF0000;
-            text-shadow: 3px 3px #00FF00;
-            animation: laggy-text-move 0.5s infinite steps(2);
-        }
-
-        @keyframes laggy-text-move {
-            0% { transform: translate(-50%, 0); }
-            100% { transform: translate(-50%, -10px); }
-        }
-
-        .popup {
-            position: absolute;
-            width: 200px;
-            height: 100px;
-            background-color: #FFFFFF;
-            border: 2px solid #000000;
-            animation: popup-move 3s infinite steps(5);
-            transform: translate(-50%, -50%);
-            box-shadow: 10px 10px #FF0000, -10px -10px #00FF00;
+            background: hsl(200, 100%, 50%);
+            border: 5px solid hsl(0, 100%, 50%);
+            animation: hueShift 5s infinite, glitch 0.5s infinite alternate-reverse;
+            transform: translate(-50%, -50%) rotate(-10deg);
             z-index: 1000;
+            filter: blur(2px) contrast(500%) saturate(300%);
+            image-rendering: pixelated;
         }
 
-        .popup .title {
-            background-color: #0000FF;
-            padding: 5px;
-            font-size: 14px;
-            color: #FFFFFF;
-            font-weight: bold;
+        .hsl-window .content {
+            padding: 10px;
+            color: #FFF;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.5);
+            text-shadow: 3px 3px #000;
         }
 
-        .popup .content {
-            padding: 5px;
-            font-size: 12px;
-            color: #000000;
-            background-color: #FFFF00;
-            filter: blur(1px);
+        /* Complex moving and rotating animations */
+        @keyframes move {
+            0% { top: 10%; left: 20%; }
+            25% { top: 30%; left: 60%; }
+            50% { top: 60%; left: 40%; }
+            75% { top: 80%; left: 10%; }
+            100% { top: 40%; left: 50%; }
         }
 
-        @keyframes popup-move {
-            0% { top: 10%; left: 10%; }
-            50% { top: 70%; left: 80%; }
-            100% { top: 30%; left: 40%; }
+        @keyframes hueShift {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
         }
 
-        @keyframes gdi-background-flicker {
-            0% { background-color: #000080; }
-            50% { background-color: #FF00FF; }
-            100% { background-color: #000080; }
+        @keyframes glitch {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-40%, -40%) scale(1.1) rotate(5deg); }
+            100% { transform: translate(-60%, -60%) scale(0.9) rotate(-5deg); }
         }
 
-        /* Laggy error message */
-        .error-message {
-            width: 100%;
+        /* Glitching, GDI failure effect */
+        .gdi-fail {
+            width: 150px;
+            height: 80px;
+            background-color: #FF0000;
             position: absolute;
-            top: 80%;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            font-size: 20px;
-            color: #FF0000;
-            animation: laggy-error 3s infinite;
+            top: 20%;
+            left: 60%;
+            animation: glitch 0.5s infinite alternate, move 2s infinite;
+            filter: contrast(300%) blur(3px);
         }
 
-        @keyframes laggy-error {
-            0% { transform: translateX(-50%) scale(1); }
-            100% { transform: translateX(-50%) scale(0.5); }
+        /* Customizing the background glitching effect */
+        @keyframes background-glitch {
+            0% { background-color: #000; }
+            50% { background-color: #FF00FF; }
+            100% { background-color: #000; }
         }
 
         body {
-            animation: gdi-background-flicker 5s infinite;
+            animation: background-glitch 5s infinite;
+        }
+
+        /* Random glitch windows */
+        .popup {
+            width: 250px;
+            height: 150px;
+            background-color: #FFF;
+            border: 2px solid #000;
+            position: absolute;
+            z-index: 1000;
+            animation: glitch 0.7s infinite alternate-reverse, move 4s infinite;
+            filter: hue-rotate(90deg) contrast(400%) saturate(200%) blur(2px);
+        }
+
+        .popup .title-bar {
+            background-color: #008080;
+            padding: 5px;
+            color: #FFF;
+            font-size: 16px;
+        }
+
+        .popup .content {
+            padding: 10px;
+            font-size: 12px;
+            color: #000;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .gdi-error {
+            font-size: 30px;
+            color: #FF0000;
+            position: absolute;
+            top: 90%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: glitch 0.5s infinite, hueShift 5s infinite;
+        }
+
+        .popup-bad {
+            width: 200px;
+            height: 120px;
+            background-color: #FF00FF;
+            border: 3px solid #FF0000;
+            position: absolute;
+            top: 30%;
+            left: 70%;
+            filter: blur(2px) hue-rotate(180deg);
+            animation: glitch 0.5s infinite alternate-reverse, move 3s infinite;
         }
     </style>
 </head>
 <body>
 
-    <div class="laggy-text">SYSTEM FAILURE</div>
-
-    <div class="gdi-window" style="top: 50%; left: 60%;">
-        <div class="title-bar">Error 404</div>
-        <div class="content">The system has encountered a critical failure.</div>
+    <div class="gdi-window" style="top: 20%; left: 30%;">
+        <div class="title-bar">GDI Error</div>
+        <div class="content">Warning: Critical Failure</div>
     </div>
 
-    <div class="gdi-window" style="top: 30%; left: 30%;">
-        <div class="title-bar">Fatal Exception</div>
-        <div class="content">0x00000F4: System Crash Imminent</div>
+    <div class="gdi-window" style="top: 50%; left: 40%;">
+        <div class="title-bar">System Crash</div>
+        <div class="content">Memory Corruption Detected</div>
     </div>
 
-    <div class="popup" style="top: 60%; left: 50%;">
-        <div class="title">Windows Error</div>
-        <div class="content">Random Popup Warning! Click OK.</div>
+    <div class="hsl-window" style="top: 40%; left: 60%;">
+        <div class="content">HSL Shader Active</div>
     </div>
 
-    <div class="error-message">Error: GDI+ FAILURE DETECTED</div>
+    <div class="popup" style="top: 70%; left: 40%;">
+        <div class="title-bar">Virus Warning</div>
+        <div class="content">Your system is infected!</div>
+    </div>
+
+    <div class="gdi-fail"></div>
+
+    <div class="popup-bad"></div>
+
+    <div class="gdi-error">Fatal Error: 0x000000F4</div>
 
 </body>
 </html>
