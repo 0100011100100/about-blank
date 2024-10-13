@@ -3,41 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Salinewin Virus Simulation (Harmless)</title>
     <style>
         body {
             background-color: black;
-            color: red;
-            font-family: "Courier New", Courier, monospace;
+            color: lime;
+            font-family: 'Courier New', Courier, monospace;
             text-align: center;
+            overflow: hidden;
         }
 
-        .error-message {
-            font-size: 2em;
-            margin-top: 20%;
+        .popup {
+            position: absolute;
+            background-color: red;
+            color: white;
+            border: 2px solid black;
+            padding: 20px;
+            font-size: 20px;
+            animation: movePopup 5s infinite;
+        }
+
+        @keyframes movePopup {
+            0% { top: 0; left: 0; }
+            25% { top: 10%; left: 80%; }
+            50% { top: 50%; left: 40%; }
+            75% { top: 70%; left: 10%; }
+            100% { top: 90%; left: 90%; }
         }
     </style>
 </head>
 <body>
-    <div class="error-message">System Error! Please Restart!</div>
+    <h1>System Error</h1>
+    <p>Critical error detected. System shutting down...</p>
+
+    <div class="popup">Virus Alert! Click here to remove virus</div>
+
+    <audio autoplay loop>
+        <source src="error-sound.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <script>
-        // Play a spooky sound when the page loads
-        const sound = new Audio('https://www.soundjay.com/button/beep-07.wav');  // Example sound
-        sound.play();
+        // Function to create random popups like a virus would
+        function createPopup() {
+            const popup = document.createElement('div');
+            popup.classList.add('popup');
+            popup.textContent = 'System Failure...';
+            document.body.appendChild(popup);
 
-        // Fake error popup every 5 seconds
-        setInterval(() => {
-            alert('Critical system error! Reboot required!');
-        }, 5000);
+            // Random position
+            popup.style.top = Math.random() * window.innerHeight + 'px';
+            popup.style.left = Math.random() * window.innerWidth + 'px';
 
-        // Changing background color for "hacker" effect
-        let colors = ['red', 'black'];
-        let i = 0;
-        setInterval(() => {
-            document.body.style.backgroundColor = colors[i % colors.length];
-            i++;
-        }, 1000);
+            // Random time to disappear
+            setTimeout(() => {
+                popup.remove();
+            }, 3000 + Math.random() * 2000);
+        }
+
+        // Continuously create popups
+        setInterval(createPopup, 1000);
+
+        // Play error sounds (you would need to provide the sound file)
+        function playSound() {
+            const sound = new Audio('error-sound.mp3');
+            sound.play();
+        }
+
+        setInterval(playSound, 5000); // Play the sound every 5 seconds
     </script>
 </body>
 </html>
