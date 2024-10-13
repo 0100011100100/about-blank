@@ -9,7 +9,7 @@
         body, html {
             height: 100%;
             margin: 0;
-            background-image: url('windows-xp-background.jpg'); /* Add your Windows XP background image */
+            background-image: url('https://i.imgur.com/WcEgdR6.jpg'); /* Windows XP background */
             background-size: cover;
             overflow: hidden;
             position: relative;
@@ -43,49 +43,40 @@
             background-color: black;
             color: red;
             border: 2px solid white;
-            font-size: 2em;
+            font-size: 1.5em;
             padding: 20px;
             z-index: 1000;
             display: none; /* Initially hidden */
             white-space: nowrap;
+            animation: shake 0.1s infinite;
         }
 
-        /* Chaos style */
-        .chaos {
-            animation: chaosEffect 0.05s infinite;
-            transform: rotate(10deg);
-            z-index: 1;
+        @keyframes shake {
+            0% { transform: translate(0); }
+            25% { transform: translate(-5px, -5px); }
+            50% { transform: translate(5px, -5px); }
+            75% { transform: translate(-5px, 5px); }
+            100% { transform: translate(0); }
         }
 
-        @keyframes chaosEffect {
-            0% { transform: translate(0, 0); }
-            10% { transform: translate(-10px, -10px); }
-            20% { transform: translate(10px, 0); }
-            30% { transform: translate(0, 10px); }
-            40% { transform: translate(-10px, 10px); }
-            50% { transform: translate(10px, -10px); }
-            60% { transform: translate(0, -10px); }
-            70% { transform: translate(-10px, 0); }
-            80% { transform: translate(10px, 10px); }
-            90% { transform: translate(-10px, -10px); }
-            100% { transform: translate(0, 0); }
-        }
-
-        /* Flashing layer */
+        /* Flashing lights */
         .flashing {
-            animation: flashingEffect 0.1s infinite alternate;
+            animation: flashingEffect 0.1s infinite;
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0.2; /* Dimmer for layering effect */
+            opacity: 0.3; /* Dimmer for layering effect */
+            pointer-events: none; /* Click-through */
         }
 
         @keyframes flashingEffect {
             0% { background-color: red; }
-            50% { background-color: blue; }
-            100% { background-color: green; }
+            25% { background-color: blue; }
+            50% { background-color: green; }
+            75% { background-color: yellow; }
+            100% { background-color: purple; }
         }
 
         .hidden {
@@ -126,6 +117,9 @@
     <script>
         function startChaos() {
             // Play sounds
+            document.getElementById('beepSound').volume = 1; // Set loud volume
+            document.getElementById('alarmSound').volume = 1; // Set loud volume
+            document.getElementById('laughSound').volume = 1; // Set loud volume
             document.getElementById('beepSound').play();
             document.getElementById('alarmSound').play();
             document.getElementById('laughSound').play();
@@ -142,12 +136,17 @@
 
         function createPopup() {
             const popup = document.createElement('div');
-            popup.classList.add('popup', 'chaos');
-            popup.textContent = "D I E";
+            popup.classList.add('popup');
+            popup.textContent = "Would you like to close this site?";
             popup.style.top = Math.random() * 100 + 'vh';
             popup.style.left = Math.random() * 100 + 'vw';
             document.body.appendChild(popup);
             popup.style.display = 'block'; // Show the popup
+
+            // Make the popup do nothing when clicked
+            popup.onclick = function() {
+                // Do nothing
+            };
 
             // Remove after random time
             setTimeout(() => {
@@ -160,10 +159,10 @@
             flashingLayer.classList.add('flashing');
             document.body.appendChild(flashingLayer);
 
-            // Remove after random time
+            // Remove after a very short time
             setTimeout(() => {
                 flashingLayer.remove();
-            }, 500);
+            }, 200);
         }
     </script>
 </body>
