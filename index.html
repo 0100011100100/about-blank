@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chaos Virus Simulation</title>
+    <title></title>
     <style>
         /* Windows XP background */
         body, html {
             height: 100%;
             margin: 0;
-            background-image: url('https://i.imgur.com/WcEgdR6.jpg'); /* Windows XP background */
+            background-image: url('https://imgur.com/a/Sux2zhY'); /* Windows XP background */
             background-size: cover;
             overflow: hidden;
             position: relative;
             color: white;
             font-family: 'Courier New', Courier, monospace;
+            perspective: 1000px; /* Add perspective for 3D effect */
         }
 
         .virus {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) scale(1.2);
             font-size: 3em;
             padding: 20px;
             background-color: red;
@@ -61,22 +62,22 @@
 
         /* Flashing lights */
         .flashing {
-            animation: flashingEffect 0.1s infinite;
+            animation: flashingEffect 0.05s infinite; /* More frequent flashing */
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0.3; /* Dimmer for layering effect */
             pointer-events: none; /* Click-through */
         }
 
         @keyframes flashingEffect {
             0% { background-color: red; }
-            25% { background-color: blue; }
-            50% { background-color: green; }
-            75% { background-color: yellow; }
-            100% { background-color: purple; }
+            20% { background-color: blue; }
+            40% { background-color: green; }
+            60% { background-color: yellow; }
+            80% { background-color: purple; }
+            100% { background-color: orange; }
         }
 
         .hidden {
@@ -95,6 +96,16 @@
             60% { transform: scale(1.2) skew(3deg); }
             80% { transform: scale(0.8) skew(-3deg); }
             100% { transform: scale(1); }
+        }
+
+        /* 3D zoom effect */
+        .zoom {
+            animation: zoomEffect 1s forwards; /* Zoom in */
+        }
+
+        @keyframes zoomEffect {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -50%) scale(2); } /* Zoom closer */
         }
     </style>
 </head>
@@ -132,6 +143,9 @@
 
             // Start screen distortion
             document.body.classList.add('distort');
+
+            // Start zoom effect
+            document.querySelector('.virus').classList.add('zoom');
         }
 
         function createPopup() {
