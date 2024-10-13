@@ -8,22 +8,23 @@
         body {
             background-color: #000080;
             font-family: 'Arial', sans-serif;
-            overflow: hidden;
             color: #00FF00;
+            overflow: hidden;
         }
 
+        /* Pixelated GDI effect for distorted visuals */
         .gdi-window {
-            width: 300px;
-            height: 150px;
+            width: 320px;
+            height: 180px;
             background-color: #C0C0C0;
             border: 3px solid #000000;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(0deg);
-            box-shadow: 8px 8px 0px rgba(255, 0, 0, 0.7), -8px -8px 0px rgba(0, 255, 0, 0.7);
-            animation: gdi-move 0.1s infinite alternate, gdi-rotate 0.5s infinite;
-            z-index: 100;
+            box-shadow: 10px 10px 0px rgba(255, 0, 0, 0.8), -10px -10px 0px rgba(0, 255, 0, 0.8);
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            filter: contrast(300%) saturate(200%) blur(2px);
+            image-rendering: pixelated;
+            animation: gdi-bad-move 1.2s infinite steps(1), gdi-rotate 2.5s infinite steps(10);
         }
 
         .gdi-window .title-bar {
@@ -32,37 +33,31 @@
             color: #FFFFFF;
             text-align: center;
             font-weight: bold;
+            font-size: 16px;
         }
 
         .gdi-window .content {
             padding: 10px;
-            color: black;
             background-color: #F0F0F0;
-            text-shadow: 1px 1px 0px #00FF00;
-            font-size: 1.2em;
+            text-shadow: 2px 2px 0px #FF00FF;
+            color: #000000;
+            font-size: 12px;
             line-height: 1.5em;
         }
 
-        .gdi-glitch {
-            position: absolute;
+        .gdi-error {
             width: 150px;
             height: 100px;
-            background-color: rgba(0, 255, 0, 0.5);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: gdi-glitch 0.2s infinite;
+            background-color: rgba(255, 0, 0, 0.8);
+            position: absolute;
+            animation: gdi-glitch 0.3s infinite;
+            filter: blur(2px) contrast(500%);
         }
 
-        @keyframes gdi-glitch {
-            0% { transform: translate(0, 0) skew(0deg); }
-            50% { transform: translate(-20px, 10px) skew(10deg); }
-            100% { transform: translate(20px, -10px) skew(-10deg); }
-        }
-
-        @keyframes gdi-move {
-            0% { top: 40%; left: 40%; }
-            100% { top: 60%; left: 60%; }
+        @keyframes gdi-bad-move {
+            0% { top: 20%; left: 40%; }
+            50% { top: 50%; left: 60%; }
+            100% { top: 70%; left: 50%; }
         }
 
         @keyframes gdi-rotate {
@@ -70,68 +65,119 @@
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
+        @keyframes gdi-glitch {
+            0% { transform: translate(0, 0) skew(0deg); }
+            50% { transform: translate(-30px, 15px) skew(20deg); }
+            100% { transform: translate(30px, -15px) skew(-20deg); }
+        }
+
+        /* Laggy animation for background flash */
         @keyframes gdi-background {
             0% { background-color: #000080; }
             50% { background-color: #FF0000; }
             100% { background-color: #000080; }
         }
 
-        @keyframes gdi-text {
-            0% { color: #00FF00; }
-            50% { color: #FF0000; }
-            100% { color: #00FF00; }
+        /* Fake low frame rate for "laggy" effect */
+        .laggy-text {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            color: #FF0000;
+            text-shadow: 3px 3px #00FF00;
+            animation: laggy-text-move 0.5s infinite steps(2);
+        }
+
+        @keyframes laggy-text-move {
+            0% { transform: translate(-50%, 0); }
+            100% { transform: translate(-50%, -10px); }
+        }
+
+        .popup {
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            background-color: #FFFFFF;
+            border: 2px solid #000000;
+            animation: popup-move 3s infinite steps(5);
+            transform: translate(-50%, -50%);
+            box-shadow: 10px 10px #FF0000, -10px -10px #00FF00;
+            z-index: 1000;
+        }
+
+        .popup .title {
+            background-color: #0000FF;
+            padding: 5px;
+            font-size: 14px;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+
+        .popup .content {
+            padding: 5px;
+            font-size: 12px;
+            color: #000000;
+            background-color: #FFFF00;
+            filter: blur(1px);
+        }
+
+        @keyframes popup-move {
+            0% { top: 10%; left: 10%; }
+            50% { top: 70%; left: 80%; }
+            100% { top: 30%; left: 40%; }
+        }
+
+        @keyframes gdi-background-flicker {
+            0% { background-color: #000080; }
+            50% { background-color: #FF00FF; }
+            100% { background-color: #000080; }
+        }
+
+        /* Laggy error message */
+        .error-message {
+            width: 100%;
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: 20px;
+            color: #FF0000;
+            animation: laggy-error 3s infinite;
+        }
+
+        @keyframes laggy-error {
+            0% { transform: translateX(-50%) scale(1); }
+            100% { transform: translateX(-50%) scale(0.5); }
         }
 
         body {
-            animation: gdi-background 2s infinite;
-        }
-
-        .gdi-text {
-            font-size: 3em;
-            position: absolute;
-            top: 20%;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: gdi-text 0.3s infinite;
-        }
-
-        audio {
-            display: none;
+            animation: gdi-background-flicker 5s infinite;
         }
     </style>
 </head>
 <body>
 
-    <h1 class="gdi-text">ERROR: System Corrupted</h1>
+    <div class="laggy-text">SYSTEM FAILURE</div>
 
-    <div class="gdi-window" style="top: 30%; left: 70%;">
-        <div class="title-bar">Critical Error</div>
-        <div class="content">Your system has encountered a fatal error. GDI+ Failure.</div>
+    <div class="gdi-window" style="top: 50%; left: 60%;">
+        <div class="title-bar">Error 404</div>
+        <div class="content">The system has encountered a critical failure.</div>
     </div>
 
-    <div class="gdi-window" style="top: 70%; left: 30%;">
+    <div class="gdi-window" style="top: 30%; left: 30%;">
         <div class="title-bar">Fatal Exception</div>
-        <div class="content">0x000000F4: System Crash</div>
+        <div class="content">0x00000F4: System Crash Imminent</div>
     </div>
 
-    <div class="gdi-glitch"></div>
+    <div class="popup" style="top: 60%; left: 50%;">
+        <div class="title">Windows Error</div>
+        <div class="content">Random Popup Warning! Click OK.</div>
+    </div>
 
-    <audio id="gdi-sound" autoplay loop>
-        <source src="https://www.soundjay.com/button/beep-02.wav" type="audio/wav">
-    </audio>
-
-    <audio id="gdi-error" autoplay>
-        <source src="https://www.soundjay.com/button/beep-07.wav" type="audio/wav">
-    </audio>
-
-    <script>
-        // Trigger sound effects randomly for extra chaotic vibe
-        const errorSound = document.getElementById('gdi-error');
-        setInterval(() => {
-            errorSound.currentTime = 0;
-            errorSound.play();
-        }, Math.random() * 3000 + 1000); // Random interval between 1 and 3 seconds
-    </script>
+    <div class="error-message">Error: GDI+ FAILURE DETECTED</div>
 
 </body>
 </html>
