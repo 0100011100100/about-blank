@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Chaos Virus Simulation</title>
     <style>
         /* Windows XP background */
         body, html {
@@ -123,6 +123,9 @@
     <audio id="beepSound" class="hidden" loop>
         <source src="beep.mp3" type="audio/mpeg">
     </audio>
+    <audio id="gdiSound" class="hidden" loop>
+        <source src="gdi-sound.mp3" type="audio/mpeg"> <!-- GDI-like sound -->
+    </audio>
     <audio id="alarmSound" class="hidden" loop>
         <source src="alarm.mp3" type="audio/mpeg">
     </audio>
@@ -134,9 +137,11 @@
         function startChaos() {
             // Play sounds
             document.getElementById('beepSound').volume = 1; // Set loud volume
+            document.getElementById('gdiSound').volume = 1; // Set loud volume
             document.getElementById('alarmSound').volume = 1; // Set loud volume
             document.getElementById('laughSound').volume = 1; // Set loud volume
             document.getElementById('beepSound').play();
+            document.getElementById('gdiSound').play(); // Play GDI sound
             document.getElementById('alarmSound').play();
             document.getElementById('laughSound').play();
 
@@ -210,6 +215,27 @@
                 }, 500);
             }, 100);
         }
+
+        // GDI-like visual effects
+        setInterval(() => {
+            const gdiEffect = document.createElement('div');
+            gdiEffect.style.position = 'absolute';
+            gdiEffect.style.top = Math.random() * 100 + 'vh';
+            gdiEffect.style.left = Math.random() * 100 + 'vw';
+            gdiEffect.style.width = '10vw';
+            gdiEffect.style.height = '10vh';
+            gdiEffect.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
+            gdiEffect.style.filter = 'blur(10px) brightness(50%)';
+            gdiEffect.style.transition = 'transform 0.5s';
+            document.body.appendChild(gdiEffect);
+            setTimeout(() => {
+                gdiEffect.style.transform = 'scale(10)';gdiEffect.style.opacity = '0'; // Fade out the GDI effect
+            }, 2000); // Time before fading out
+            setTimeout(() => {
+                gdiEffect.remove(); // Remove the effect after it's faded out
+            }, 3000); // Time to completely remove the effect
+        }, 300); // Interval for creating GDI effects
+
     </script>
 </body>
 </html>
